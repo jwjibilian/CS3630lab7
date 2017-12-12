@@ -17,14 +17,21 @@
       <file leaf-file-name="go_to_goal.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/go_to_goal.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="200" column="12" lean-forward="false" selection-start-line="200" selection-start-column="12" selection-end-line="200" selection-end-column="28" />
-              <folding />
+            <state relative-caret-position="328">
+              <caret line="267" column="64" lean-forward="false" selection-start-line="267" selection-start-column="64" selection-end-line="267" selection-end-column="64" />
+              <folding>
+                <element signature="e#58#68#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>print</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -145,15 +152,25 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/code/go_to_goal.py</url>
+          <line>4</line>
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/code/go_to_goal.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="200" column="12" lean-forward="false" selection-start-line="200" selection-start-column="12" selection-end-line="200" selection-end-column="28" />
-          <folding />
+        <state relative-caret-position="328">
+          <caret line="267" column="64" lean-forward="false" selection-start-line="267" selection-start-column="64" selection-end-line="267" selection-end-column="64" />
+          <folding>
+            <element signature="e#58#68#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
