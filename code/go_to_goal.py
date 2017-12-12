@@ -137,20 +137,12 @@ async def run(robot: cozmo.robot.Robot):
     ######################### YOUR CODE HERE####################################
 
     isFinished = False
+    moveVal = 1
     while True:
         pf = ParticleFilter(grid)
 
         await robot.set_lift_height(0).wait_for_completed()
         await robot.set_head_angle(degrees(5)).wait_for_completed()
-
-        if isFinished and robot.is_picked_up:
-            await robot.play_anim_trigger(cozmo.anim.Triggers.SparkFailure).wait_for_completed()
-            isFinished = False
-            continue
-
-        if isFinished and not robot.is_picked_up:
-            await robot.play_anim_trigger(cozmo.anim.Triggers.Sleeping).wait_for_completed()
-            continue
 
         #Obtain Odom Info
         curr_pose = robot.pose
@@ -190,47 +182,51 @@ async def run(robot: cozmo.robot.Robot):
 
             last_pose = curr_pose
 
-            if robot.is_picked_up or estimate[3]:
-                if robot.is_picked_up:
-                    await robot.play_anim_trigger(cozmo.anim.Triggers.SparkFailure).wait_for_completed()
+            if estimate[3]:
                 continue
 
             numMarkers = len(markers)
-            if numMarkers > 0 and marker2d_list[0][0] > 2.0:
-                await robot.drive_straight(distance_mm(50), speed_mmps(50)).wait_for_completed()
+            if moveVal == -1 or (numMarkers > 0 and marker2d_list[0][0] > 2.0):
+                await robot.drive_straight(distance_mm(moveVal * 50), speed_mmps(50)).wait_for_completed()
+                if moveVal == -1:
+                    await robot.turn_in_place(degrees(30)).wait_for_completed()
+                moveVal *= -1
             else:
-                await robot.turn_in_place(degrees(25)).wait_for_completed()
-
-        if robot.is_picked_up:
-            continue
+                await robot.turn_in_place(degrees(30)).wait_for_completed()
 
         #Rotate toward goal
         x, y, h, c = compute_mean_pose(pf.particles)
-        y_diff = goal[1] * 0.95 - y
-        x_diff = goal[0] * 0.95 - x
-        tan = math.degrees(atan2(y_diff, x_diff))
-        rot = diff_heading_deg(tan, h)
-        await robot.turn_in_place(degrees(rot)).wait_for_completed()
 
-        #Move toward goal
-        dist_to_goal = math.sqrt(y_diff**2 + x_diff**2) * 25
-        dist = 0.0
-        print(dist_to_goal)
-        while dist < dist_to_goal:
-            min_dist = min(30, dist_to_goal - dist)
-            dist_mm = distance_mm(min_dist)
-            if robot.is_picked_up:
-                break
-            await robot.drive_straight(dist_mm, speed_mmps(40)).wait_for_completed()
-            dist = dist + min_dist
+        if x > 13:
+            print("storage")
+        else:
+            print("pickup")
 
-        if dist != dist_to_goal or robot.is_picked_up:
-            continue
-
-        goal_rot = -1 * tan
-        await robot.turn_in_place(degrees(goal_rot)).wait_for_completed()
-        isFinished = True
-        await robot.play_anim_trigger(Triggers.SparkSuccess).wait_for_completed()
+        # y_diff = goal[1] * 0.95 - y
+        # x_diff = goal[0] * 0.95 - x
+        # tan = math.degrees(atan2(y_diff, x_diff))
+        # rot = diff_heading_deg(tan, h)
+        # await robot.turn_in_place(degrees(rot)).wait_for_completed()
+        #
+        # #Move toward goal
+        # dist_to_goal = math.sqrt(y_diff**2 + x_diff**2) * 25
+        # dist = 0.0
+        # print(dist_to_goal)
+        # while dist < dist_to_goal:
+        #     min_dist = min(30, dist_to_goal - dist)
+        #     dist_mm = distance_mm(min_dist)
+        #     if robot.is_picked_up:
+        #         break
+        #     await robot.drive_straight(dist_mm, speed_mmps(40)).wait_for_completed()
+        #     dist = dist + min_dist
+        #
+        # if dist != dist_to_goal or robot.is_picked_up:
+        #     continue
+        #
+        # goal_rot = -1 * tan
+        # await robot.turn_in_place(degrees(goal_rot)).wait_for_completed()
+        # isFinished = True
+        # await robot.play_anim_trigger(Triggers.SparkSuccess).wait_for_completed()
 
 
 
