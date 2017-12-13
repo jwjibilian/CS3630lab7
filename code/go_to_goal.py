@@ -138,6 +138,13 @@ async def run(robot: cozmo.robot.Robot):
 
     isFinished = False
     moveVal = 1
+    # while True:
+    #     try:
+    #         cube = await robot.world.wait_for_observed_light_cube(timeout=1)
+    #         print(cube.pose.position)
+    #         time.sleep(1)
+    #     except:
+    #         pass
     while True:
         pf = ParticleFilter(grid)
 
@@ -203,7 +210,7 @@ async def run(robot: cozmo.robot.Robot):
             print("warehouse region")
         else:
             isDockingRegion = True
-            goal = 9,9,0
+            goal = 9,12,0
             print("docking region")
 
         y_diff = goal[1] * 0.95 - y
@@ -213,7 +220,7 @@ async def run(robot: cozmo.robot.Robot):
         await robot.turn_in_place(degrees(rot)).wait_for_completed()
 
         #Move toward goal
-        dist_to_goal = math.sqrt(y_diff**2 + x_diff**2) * 25
+        dist_to_goal = math.sqrt(y_diff**2 + x_diff**2) * 25.6
         dist = 0.0
         while dist < dist_to_goal:
             min_dist = min(30, dist_to_goal - dist)
@@ -227,11 +234,15 @@ async def run(robot: cozmo.robot.Robot):
         if isDockingRegion:
             await robot.turn_in_place(degrees(145)).wait_for_completed()
         else:
-            await robot.turn_in_place(degrees(180)).wait_for_completed()
+            await robot.turn_in_place(degrees(150)).wait_for_completed()
 
         cube = None
         try:
             cube = await robot.world.wait_for_observed_light_cube(timeout=1)
+            dist = math.sqrt((cube.pose.position.y - robot.pose.position.y)**2 + (cube.pose.position.x - robot.pose.position.x)**2)
+            print(dist)
+            if dist > 250:
+                cube = None
         except:
             pass
         timer = 1
@@ -242,6 +253,10 @@ async def run(robot: cozmo.robot.Robot):
                 await robot.turn_in_place(degrees(60)).wait_for_completed()
                 try:
                     cube = await robot.world.wait_for_observed_light_cube(timeout=1)
+                    dist = math.sqrt((cube.pose.position.y - robot.pose.position.y)**2 + (cube.pose.position.x - robot.pose.position.x)**2)
+                    print(dist)
+                    if dist > 250:
+                        cube = None
                 except:
                     pass
                 timer = 0
@@ -249,6 +264,10 @@ async def run(robot: cozmo.robot.Robot):
                 await robot.turn_in_place(degrees(-30)).wait_for_completed()
                 try:
                     cube = await robot.world.wait_for_observed_light_cube(timeout=1)
+                    dist = math.sqrt((cube.pose.position.y - robot.pose.position.y)**2 + (cube.pose.position.x - robot.pose.position.x)**2)
+                    print(dist)
+                    if dist > 250:
+                        cube = None
                 except:
                     pass
                 timer += 1
@@ -256,19 +275,27 @@ async def run(robot: cozmo.robot.Robot):
             if cube:
                 await robot.pickup_object(cube, num_retries=3).wait_for_completed()
                 await robot.go_to_pose(previousPose).wait_for_completed()
+                await robot.go_to_pose(previousPose).wait_for_completed()
                 if isDockingRegion:
-                    await robot.turn_in_place(degrees(-145)).wait_for_completed()
-                    await robot.drive_straight(distance_mm(80), speed_mmps(40)).wait_for_completed()
+                    turnAngle = -145
+                    driveDist = 80
                 else:
                     if numBoxesPlaced == 0:
-                        await robot.turn_in_place(degrees(-125)).wait_for_completed()
-                        await robot.drive_straight(distance_mm(80), speed_mmps(40)).wait_for_completed()
+                        turnAngle = -100
+                        driveDist = 120
+                    elif numBoxesPlaced == 1:
+                        turnAngle = -120
+                        driveDist = 80
                     else:
-                        await robot.turn_in_place(degrees(-165)).wait_for_completed()
-                        await robot.drive_straight(distance_mm(40), speed_mmps(40)).wait_for_completed()
+                        turnAngle = -140
+                        driveDist = 40
 
+                await robot.turn_in_place(degrees(turnAngle)).wait_for_completed()
+                await robot.drive_straight(distance_mm(driveDist), speed_mmps(40)).wait_for_completed()
                 await robot.set_lift_height(0).wait_for_completed()
-                await robot.go_to_pose(previousPose).wait_for_completed()
+                await robot.drive_straight(distance_mm(-1 * (driveDist - 20)), speed_mmps(40)).wait_for_completed()
+                await robot.turn_in_place(degrees(-1 * turnAngle)).wait_for_completed()
+                # await robot.go_to_pose(previousPose).wait_for_completed()
                 cube = None
                 timer = 1
                 numBoxesPlaced += 1

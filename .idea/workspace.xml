@@ -17,8 +17,8 @@
       <file leaf-file-name="go_to_goal.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/go_to_goal.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="267" column="64" lean-forward="false" selection-start-line="267" selection-start-column="64" selection-end-line="267" selection-end-column="64" />
+            <state relative-caret-position="85">
+              <caret line="276" column="0" lean-forward="false" selection-start-line="276" selection-start-column="0" selection-end-line="277" selection-end-column="0" />
               <folding>
                 <element signature="e#58#68#0" expanded="true" />
               </folding>
@@ -31,6 +31,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>print</find>
+      <find>25</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -46,7 +47,7 @@
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
     <option name="width" value="1440" />
-    <option name="height" value="810" />
+    <option name="height" value="807" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -125,7 +126,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="810" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="807" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -166,8 +167,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/code/go_to_goal.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="267" column="64" lean-forward="false" selection-start-line="267" selection-start-column="64" selection-end-line="267" selection-end-column="64" />
+        <state relative-caret-position="85">
+          <caret line="276" column="0" lean-forward="false" selection-start-line="276" selection-start-column="0" selection-end-line="277" selection-end-column="0" />
           <folding>
             <element signature="e#58#68#0" expanded="true" />
           </folding>
