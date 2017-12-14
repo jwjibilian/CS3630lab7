@@ -206,11 +206,11 @@ async def run(robot: cozmo.robot.Robot):
 
         if x > 13:
             isDockingRegion = False
-            goal = 20,9,0
+            goal = 20,8,0
             print("warehouse region")
         else:
             isDockingRegion = True
-            goal = 9,12,0
+            goal = 9,9,0
             print("docking region")
 
         y_diff = goal[1] * 0.95 - y
@@ -282,13 +282,13 @@ async def run(robot: cozmo.robot.Robot):
                 else:
                     if numBoxesPlaced == 0:
                         turnAngle = -100
-                        driveDist = 120
+                        driveDist = 125
                     elif numBoxesPlaced == 1:
                         turnAngle = -120
-                        driveDist = 80
+                        driveDist = 85
                     else:
                         turnAngle = -150
-                        driveDist = 40
+                        driveDist = 45
 
                 await robot.turn_in_place(degrees(turnAngle)).wait_for_completed()
                 await robot.drive_straight(distance_mm(driveDist), speed_mmps(40)).wait_for_completed()
